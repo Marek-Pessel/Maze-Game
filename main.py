@@ -1,15 +1,21 @@
 import pygame
+from pygame import mixer
 from maze_generator import Maze, Wall
 from player import Player, Enemy
 from gui import GUI, Button
 import utils
 import path_solver
+import time
 
 # define window parameter
 cell_size = 26
 menu_size = 250
 window_hgt = 621
 window_wdt = 621 + menu_size
+
+# initialize pygame window
+pygame.init()   
+pygame.display.set_caption("MazeGame")
 
 # load images
 easy_img = [pygame.image.load("images/easy.jpg"),
@@ -23,6 +29,16 @@ hard_img = [pygame.image.load("images/hard.jpg"),
 
 player_img = pygame.image.load("images/player.jpg")
 enemy_img = pygame.image.load("images/enemy.jpg")
+
+# load sounds and music
+mixer.music.load("sounds/background_music.mp3")
+diamond_sound = mixer.Sound("sounds/diamond.mp3")
+eaten_sound = mixer.Sound("sounds/eaten.mp3")
+
+# start background sound
+
+mixer.music.play(-1) # -1 for endless loop
+mixer.music.set_volume(0.2)
 
 difficulty = 0  # difficulty easy as default when starting the game
 
@@ -56,11 +72,6 @@ while run:
     menu = pygame.Rect(window_wdt-menu_size, 0, menu_size, window_hgt)
     clock = pygame.time.Clock()
 
-    # initialize pygame window
-    pygame.init()   
-    pygame.display.set_caption("MazeGame")
-
-
     ### MAIN LOOP ###
 
     finished = False
@@ -68,7 +79,11 @@ while run:
 
         # check win condition
         if utils.check_finished(player.rect, gui.treasure_rect):
-            finished = True
+            mixer.music.pause()
+            diamond_sound.play()
+            time.sleep(1.5)
+            mixer.music.play(-1)
+            break
 
         # handle user activity
         for event in pygame.event.get():
@@ -99,7 +114,6 @@ while run:
             curr_pos = player.rect.center
             curr_pos = (int(curr_pos[0]/cell_size), int(curr_pos[1]/cell_size))
             solution = path_solver.solve_maze(maze,curr_pos)
-            print("want solution")
         else:
             solution = []
 
@@ -107,10 +121,11 @@ while run:
 
         # cought player?
         if utils.cought_player(player.rect, enemies):
-            # end the game
-            finished = True
-            #difficulty = 0
-            #cell_size = 27
+            mixer.music.pause()
+            eaten_sound.play()
+            time.sleep(2)
+            mixer.music.play(-1)
+            break
 
         pygame.display.update()
         clock.tick(30)

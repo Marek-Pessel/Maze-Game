@@ -1,5 +1,5 @@
 import pygame
-from player import Enemy
+from player import Player
 
 class GUI():
 
@@ -31,6 +31,9 @@ class GUI():
         self.treasure_rect = self.treasure_tf.get_rect()
         self.treasure_rect.x = (len(maze)-2) * self.cs
         self.treasure_rect.y = (len(maze)-2) * self.cs
+
+        # load special sounds
+        self.walking = pygame.mixer.Sound("sounds/walking.mp3")
 
         self.sol_rect = pygame.Rect(0, 0, self.cs, self.cs)
 
@@ -77,9 +80,13 @@ class GUI():
         dest_x, dest_y = figure.move()
 
         if self.validate_step(dest_x, dest_y):
+            # play sound when player walked
+            if type(figure) == Player and not figure.rect.topleft == (dest_x, dest_y):
+                self.walking.play()
             figure.rect.x = dest_x
             figure.rect.y = dest_y
             figure.cnt = 0
+
         else:
             # change enemy direction
             try:
@@ -106,17 +113,6 @@ class GUI():
             if self.maze[corner[1]][corner[0]] == 1: # colide with wall
                 return False
         return True
-
-
-    
-        # get indeces to access 2D maze array
-        """dest_cell_col = int(x / self.cs)
-        dest_cell_row = int(y / self.cs)
-
-        if self.maze[dest_cell_row][dest_cell_col] == 0: # its walkable
-            return True
-        else:
-            return False"""
         
 class Button():
     def __init__(self, x=int, y=int, images=list, scale=float, name=str, settings=tuple):

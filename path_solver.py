@@ -18,9 +18,15 @@ def solve_maze(maze, pos) -> list:
                 visited.append(neighbor)    # mark cell as visited
                 found_one = True            # cell is no dead end
                 break                       # leave for loop
-        if not found_one:           
-            queque.pop(-1)              # remove dead end cell from queque
-            curr_cell = queque[-1]      # return to cell before
+        if not found_one: 
+            try:
+                # remove dead end cell from queque          
+                queque.pop(-1)
+                # return to cell before - not working if player is at treasure
+                curr_cell = queque[-1]      
+            except:
+                break
+            
         elif curr_cell == goal:
             break   # end search
 

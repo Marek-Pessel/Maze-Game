@@ -32,6 +32,11 @@ class Player(Figure):
         elif key[pygame.K_w]:
             dest_y -= self.cs     # move up
         
+        # player wanted to walk?
+        #if key[pygame.K_d] or key[pygame.K_a] or key[pygame.K_s] or key[pygame.K_w]:
+        #    walking = pygame.mixer.Sound("sounds/walking.mp3")
+        #    walking.play()
+        
         return dest_x, dest_y
     
 class Enemy(Figure):
@@ -69,7 +74,6 @@ class Enemy(Figure):
         return dest_x, dest_y
 
     def set_start_pos(self, maze, dest_pos):
-        print
         directions = [(0,1), (0,-1), (1,0), (-1,0)]
 
         if maze[dest_pos[1]][dest_pos[0]] == 1: # figure is on wall
@@ -82,5 +86,3 @@ class Enemy(Figure):
         
         self.rect.x = dest_pos[0] * self.cs
         self.rect.y = dest_pos[1] * self.cs
-
-        print(dest_pos)
