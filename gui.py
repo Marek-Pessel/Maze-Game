@@ -25,17 +25,27 @@ class GUI():
         self.white = (255, 255, 255)
         self.menu_color = (200, 180, 180)   # light beighe
         self.solution_col = (120, 40, 240)   
-        # load special images
+        # create special images
         self.diamond_img = pygame.image.load("images/diamond.jpg")
         self.treasure_tf = pygame.transform.scale(self.diamond_img, (self.cs, self.cs))
         self.treasure_rect = self.treasure_tf.get_rect()
         self.treasure_rect.x = (len(maze)-2) * self.cs
         self.treasure_rect.y = (len(maze)-2) * self.cs
 
+        self.score_tf = pygame.transform.scale(self.diamond_img, (35, 35))
+        self.score_rect = self.score_tf.get_rect()
+        self.score_rect.x = 640
+        self.score_rect.y = 65
+
+        self.sol_rect = pygame.Rect(0, 0, self.cs, self.cs)
+
         # load special sounds
         self.walking = pygame.mixer.Sound("sounds/walking.mp3")
 
-        self.sol_rect = pygame.Rect(0, 0, self.cs, self.cs)
+        # load fonts
+        self.start_font = pygame.font.Font("pixelfont/PressStart2P-vaV7.ttf", 19)
+        self.menu_font = pygame.font.Font("pixelfont/PressStart2P-vaV7.ttf", 15)
+
 
     def draw_grid(self, menu, solution):
 
@@ -68,8 +78,12 @@ class GUI():
         for enemy in self.enemies:
             self.screen.blit(enemy.img_tf, enemy.rect)
 
-        # coloring menu space
+        # draw menu space
         pygame.draw.rect(self.screen, self.menu_color, menu)
+        self.screen.blit(self.score_tf, self.score_rect)
+        img = self.menu_font.render('diamonds:' + str(self.player.score), True, (0,0,0))
+        self.screen.blit(img, (680, 82))
+
 
         # add buttons
         for button in self.buttons:
@@ -114,10 +128,10 @@ class GUI():
                 return False
         return True
     
-    def show_start_menu(self, font):
+    def show_start_menu(self):
         # text to image
-        img = font.render('Choose mode!', True, (0,0,0))
-        self.screen.blit(img, (635, 100))
+        img = self.start_font.render('Choose mode!', True, (0,0,0))
+        self.screen.blit(img, (635, 150))
         
 class Button():
 

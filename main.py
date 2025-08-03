@@ -33,10 +33,8 @@ enemy_img = pygame.image.load("images/enemy.jpg")
 # load sounds and music
 mixer.music.load("sounds/background_music.mp3")
 diamond_sound = mixer.Sound("sounds/diamond.mp3")
+diamond_sound.set_volume(0.7)
 eaten_sound = mixer.Sound("sounds/eaten.mp3")
-
-# load font
-text_font = pygame.font.Font("pixelfont/PressStart2P-vaV7.ttf", 19)
 
 # start background sound
 mixer.music.play(-1) # -1 for endless loop
@@ -44,6 +42,7 @@ mixer.music.set_volume(0.2)
 
 difficulty = 0  # difficulty easy as default when starting the game
 speed = 0       # speed of the enemies
+score = 0
 run = False
 
 ### GAME LOOP ###
@@ -57,7 +56,7 @@ while True:
     wall = Wall(cell_size)
 
     # init Player
-    player = Player(player_img, cell_size)
+    player = Player(player_img, cell_size, score)
 
     # init enemies
     enemy1 = Enemy(enemy_img, cell_size)
@@ -86,7 +85,7 @@ while True:
 
     # show start menu
     while not run:
-        gui.show_start_menu(text_font)
+        gui.show_start_menu()
         pygame.display.update()
         utils.event_handler(gui)
         for button in gui.buttons:
@@ -101,14 +100,15 @@ while True:
 
     ### MAIN LOOP ###
     while not finished:
-        pygame.display.update()
-        clock.tick(30)
+
         # check win condition
         if utils.check_finished(player.rect, gui.treasure_rect):
             mixer.music.pause()
             diamond_sound.play()
             time.sleep(1.5)
             mixer.music.play(-1)
+            score += 1
+            print(player.score)
             # turn up enemies moving freq in hard modus - limit is 6 Hz
             if difficulty == 2 and speed < 11:
                 speed += 1
@@ -121,6 +121,7 @@ while True:
         for button in gui.buttons:
             if button.activate:
                 difficulty, cell_size = button.settings
+                score = 0
                 finished = True # restarting game with new settings
 
         # moving player
@@ -154,7 +155,8 @@ while True:
             eaten_sound.play()
             time.sleep(2)
             mixer.music.play(-1)
+            score = 0
             break
 
-        #pygame.display.update()
-        #clock.tick(30)
+        pygame.display.update()
+        clock.tick(30)

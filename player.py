@@ -11,12 +11,13 @@ class Figure():
 
 class Player(Figure):
 
-    def __init__(self, image, scale):
+    def __init__(self, image, scale, score):
 
         super().__init__(image, scale)
         # starting position
         self.rect.x = scale
         self.rect.y = scale
+        self.score = score
 
     def move(self) -> int:
         key = pygame.key.get_pressed()     # sign of the pressed key
