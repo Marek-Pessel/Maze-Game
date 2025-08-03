@@ -1,18 +1,18 @@
 import pygame
 
 
-def event_handler(event, gui):
-    
-    if event.type == pygame.QUIT:
-        pygame.quit()
-        exit()
-    elif event.type == pygame.MOUSEBUTTONDOWN:
-        if event.button == 1: # left mouse button was clicked
-            # get mouse position
-            pos = pygame.mouse.get_pos()
-            # check mouse was over a button
-            for button in gui.buttons:
-                button.check_clicked(pos)
+def event_handler(gui):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1: # left mouse button was clicked
+                # get mouse position
+                pos = pygame.mouse.get_pos()
+                # check mouse was over a button
+                for button in gui.buttons:
+                    button.check_clicked(pos)
 
 
 def check_finished(player_rect, treasure_rect) -> bool:

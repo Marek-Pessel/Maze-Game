@@ -113,8 +113,14 @@ class GUI():
             if self.maze[corner[1]][corner[0]] == 1: # colide with wall
                 return False
         return True
+    
+    def show_start_menu(self, font):
+        # text to image
+        img = font.render('Choose mode!', True, (0,0,0))
+        self.screen.blit(img, (635, 100))
         
 class Button():
+
     def __init__(self, x=int, y=int, images=list, scale=float, name=str, settings=tuple):
 
         self.imgs = []

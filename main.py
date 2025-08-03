@@ -35,23 +35,31 @@ mixer.music.load("sounds/background_music.mp3")
 diamond_sound = mixer.Sound("sounds/diamond.mp3")
 eaten_sound = mixer.Sound("sounds/eaten.mp3")
 
-# start background sound
+# load font
+text_font = pygame.font.Font("pixelfont/PressStart2P-vaV7.ttf", 19)
 
+# start background sound
 mixer.music.play(-1) # -1 for endless loop
 mixer.music.set_volume(0.2)
 
 difficulty = 0  # difficulty easy as default when starting the game
-
+speed = 0       # speed of the enemies
+run = False
 
 ### GAME LOOP ###
-run = True
-while run:
-    # initialize objects
+
+while True:
+    
+    ### initialize objects
+    # init new maze
     size = int(window_hgt / cell_size)
     maze = Maze(size).get_maze()
+    wall = Wall(cell_size)
 
+    # init Player
     player = Player(player_img, cell_size)
 
+    # init enemies
     enemy1 = Enemy(enemy_img, cell_size)
     enemy1.set_start_pos(maze, (int(size*0.25), int(size*0.75)))
     enemy2 = Enemy(enemy_img, cell_size)
@@ -60,34 +68,54 @@ while run:
     enemy3.set_start_pos(maze, (int(size*0.75), int(size*0.75)))
     enemies = [enemy1, enemy2, enemy3]
 
-    wall = Wall(cell_size)
-
-    easy_bt = Button(665, 124, easy_img, 0.3, 'easy', (0, 27))
-    middle_bt = Button(647, 248, middle_img, 0.3, 'middle', (1, 23))
-    hard_bt = Button(663, 372, hard_img, 0.3, 'hard', (2, 20))
+    # init buttons
+    easy_bt = Button(665, 224, easy_img, 0.3, 'easy', (0, 27))
+    middle_bt = Button(647, 348, middle_img, 0.3, 'middle', (1, 23))
+    hard_bt = Button(663, 472, hard_img, 0.3, 'hard', (2, 20))
     buttons = [easy_bt, middle_bt, hard_bt]
 
+    # init Gui
     screen = pygame.display.set_mode((window_wdt, window_hgt))
     gui = GUI(maze, player, wall, cell_size, screen, buttons, difficulty, enemies)
     menu = pygame.Rect(window_wdt-menu_size, 0, menu_size, window_hgt)
     clock = pygame.time.Clock()
 
+    # show grid the first time
+    gui.draw_grid(menu, solution=[])
+    
+
+    # show start menu
+    while not run:
+        gui.show_start_menu(text_font)
+        pygame.display.update()
+        utils.event_handler(gui)
+        for button in gui.buttons:
+            if button.activate:
+                difficulty, cell_size = button.settings
+                run = True # restarting game with new settings
+        finished = True
+
+    else:
+        # start/continue the game
+        finished = False
+
     ### MAIN LOOP ###
-
-    finished = False
     while not finished:
-
+        pygame.display.update()
+        clock.tick(30)
         # check win condition
         if utils.check_finished(player.rect, gui.treasure_rect):
             mixer.music.pause()
             diamond_sound.play()
             time.sleep(1.5)
             mixer.music.play(-1)
+            # turn up enemies moving freq in hard modus - limit is 6 Hz
+            if difficulty == 2 and speed < 11:
+                speed += 1
             break
 
         # handle user activity
-        for event in pygame.event.get():
-            utils.event_handler(event, gui)
+        utils.event_handler(gui)
 
         # check if a button was clicked
         for button in gui.buttons:
@@ -103,7 +131,7 @@ while run:
 
         # moving enemies
         for enemy in gui.enemies:
-            if enemy.cnt == 15 - difficulty:
+            if enemy.cnt == 15 - speed:
                 gui.move_figure(enemy)
             else:
                 enemy.cnt += 1
@@ -117,6 +145,7 @@ while run:
         else:
             solution = []
 
+        # update grid
         gui.draw_grid(menu, solution)
 
         # cought player?
@@ -127,5 +156,5 @@ while run:
             mixer.music.play(-1)
             break
 
-        pygame.display.update()
-        clock.tick(30)
+        #pygame.display.update()
+        #clock.tick(30)
