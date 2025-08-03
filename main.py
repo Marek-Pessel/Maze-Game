@@ -161,7 +161,9 @@ while True:
             eaten_sound.play()
             time.sleep(2)
             mixer.music.play(-1)
+            # reset game settings
             score = 0
+            speed = 0
             pickaxe = 3
             break
 
