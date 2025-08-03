@@ -32,10 +32,18 @@ class GUI():
         self.treasure_rect.x = (len(maze)-2) * self.cs
         self.treasure_rect.y = (len(maze)-2) * self.cs
 
-        self.score_tf = pygame.transform.scale(self.diamond_img, (35, 35))
+        score_img = pygame.image.load("images/diamond_big.jpg")
+        self.score_tf = pygame.transform.scale(score_img, (35, 35))
         self.score_rect = self.score_tf.get_rect()
         self.score_rect.x = 640
         self.score_rect.y = 65
+
+        self.pickaxe_img = pygame.image.load("images/pickaxe.png").convert()
+        self.pickaxe_img.set_colorkey((0,0,0))
+        self.pickaxe_tf = pygame.transform.scale(self.pickaxe_img, (35, 35))
+        self.pickaxe_rect = self.pickaxe_tf.get_rect()
+        self.pickaxe_rect.x = 640
+        self.pickaxe_rect.y = 108
 
         self.sol_rect = pygame.Rect(0, 0, self.cs, self.cs)
 
@@ -81,8 +89,11 @@ class GUI():
         # draw menu space
         pygame.draw.rect(self.screen, self.menu_color, menu)
         self.screen.blit(self.score_tf, self.score_rect)
-        img = self.menu_font.render('diamonds:' + str(self.player.score), True, (0,0,0))
-        self.screen.blit(img, (680, 82))
+        dias = self.menu_font.render('diamonds:' + str(self.player.score), True, (0,0,0))
+        self.screen.blit(dias, (680, 75))
+        self.screen.blit(self.pickaxe_tf, self.pickaxe_rect)
+        axe = self.menu_font.render('pickaxes:' + str(self.player.pickaxe), True, (0,0,0))
+        self.screen.blit(axe, (680, 115))
 
 
         # add buttons
@@ -131,7 +142,7 @@ class GUI():
     def show_start_menu(self):
         # text to image
         img = self.start_font.render('Choose mode!', True, (0,0,0))
-        self.screen.blit(img, (635, 150))
+        self.screen.blit(img, (635, 180))
         
 class Button():
 

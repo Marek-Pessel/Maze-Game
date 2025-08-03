@@ -8,7 +8,7 @@ import path_solver
 import time
 
 # define window parameter
-cell_size = 26
+cell_size = 27
 menu_size = 250
 window_hgt = 621
 window_wdt = 621 + menu_size
@@ -33,7 +33,7 @@ enemy_img = pygame.image.load("images/enemy.jpg")
 # load sounds and music
 mixer.music.load("sounds/background_music.mp3")
 diamond_sound = mixer.Sound("sounds/diamond.mp3")
-diamond_sound.set_volume(0.7)
+diamond_sound.set_volume(0.4)
 eaten_sound = mixer.Sound("sounds/eaten.mp3")
 
 # start background sound
@@ -43,6 +43,7 @@ mixer.music.set_volume(0.2)
 difficulty = 0  # difficulty easy as default when starting the game
 speed = 0       # speed of the enemies
 score = 0
+pickaxe = 3
 run = False
 
 ### GAME LOOP ###
@@ -56,7 +57,7 @@ while True:
     wall = Wall(cell_size)
 
     # init Player
-    player = Player(player_img, cell_size, score)
+    player = Player(player_img, cell_size, score, pickaxe)
 
     # init enemies
     enemy1 = Enemy(enemy_img, cell_size)
@@ -108,7 +109,6 @@ while True:
             time.sleep(1.5)
             mixer.music.play(-1)
             score += 1
-            print(player.score)
             # turn up enemies moving freq in hard modus - limit is 6 Hz
             if difficulty == 2 and speed < 11:
                 speed += 1
@@ -122,7 +122,13 @@ while True:
             if button.activate:
                 difficulty, cell_size = button.settings
                 score = 0
+                pickaxe = 3
                 finished = True # restarting game with new settings
+
+        # player destroys wall
+        if player.destroy_wall(maze):
+            pickaxe = player.pickaxe
+            time.sleep(0.1)
 
         # moving player
         if player.cnt == 5:
@@ -156,6 +162,7 @@ while True:
             time.sleep(2)
             mixer.music.play(-1)
             score = 0
+            pickaxe = 3
             break
 
         pygame.display.update()

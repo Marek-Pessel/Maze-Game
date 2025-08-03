@@ -13,6 +13,7 @@ def event_handler(gui):
                 # check mouse was over a button
                 for button in gui.buttons:
                     button.check_clicked(pos)
+        
 
 
 def check_finished(player_rect, treasure_rect) -> bool:

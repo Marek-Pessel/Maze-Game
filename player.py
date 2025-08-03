@@ -11,13 +11,14 @@ class Figure():
 
 class Player(Figure):
 
-    def __init__(self, image, scale, score):
+    def __init__(self, image, scale, score, pickaxe):
 
         super().__init__(image, scale)
         # starting position
         self.rect.x = scale
         self.rect.y = scale
         self.score = score
+        self.pickaxe = pickaxe
 
     def move(self) -> int:
         key = pygame.key.get_pressed()     # sign of the pressed key
@@ -33,12 +34,35 @@ class Player(Figure):
         elif key[pygame.K_w]:
             dest_y -= self.cs     # move up
         
-        # player wanted to walk?
-        #if key[pygame.K_d] or key[pygame.K_a] or key[pygame.K_s] or key[pygame.K_w]:
-        #    walking = pygame.mixer.Sound("sounds/walking.mp3")
-        #    walking.play()
-        
         return dest_x, dest_y
+    
+    def destroy_wall(self, maze):
+        use_pickaxe = False
+
+        # get pressed keys
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_d] and keys[pygame.K_o]:
+            row = self.rect.y // self.cs
+            col = self.rect.x // self.cs + 1
+            use_pickaxe = True
+        elif keys[pygame.K_a] and keys[pygame.K_o]:
+            row = self.rect.y // self.cs
+            col = self.rect.x // self.cs - 1
+            use_pickaxe = True
+        elif keys[pygame.K_s] and keys[pygame.K_o]:
+            row = self.rect.y // self.cs + 1
+            col = self.rect.x // self.cs
+            use_pickaxe = True
+        elif keys[pygame.K_w] and keys[pygame.K_o]:
+            row = self.rect.y // self.cs - 1
+            col = self.rect.x // self.cs
+            use_pickaxe = True
+
+        if self.pickaxe and use_pickaxe:
+            maze[row][col] = 0
+            self.pickaxe -= 1
+
+        return use_pickaxe
     
 class Enemy(Figure):
 
