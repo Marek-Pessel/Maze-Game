@@ -21,12 +21,12 @@ numpy
 Use the following keyboard controls to navigate and interact with the maze:
 Key(s):	                        Action:
 
-W, A, S, D	                    Move the player up, left, down, right
+`W, A, S, D`	                    Move the player up, left, down, right
 
-move+O	                        Use a pickaxe to remove a wall
+`move+O`	                        Use a pickaxe to remove a wall
                                 (if any pickaxes are left)
 
-Shift       	                Highlight the path from your current Position
+`Shift`       	                Highlight the path from your current Position
                                 to the treasure (cheat/debug feature)
 
 ## Rules
