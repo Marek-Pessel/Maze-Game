@@ -45,22 +45,30 @@ class Player(Figure):
             row = self.rect.y // self.cs
             col = self.rect.x // self.cs + 1
             use_pickaxe = True
+            
         elif keys[pygame.K_a] and keys[pygame.K_o]:
             row = self.rect.y // self.cs
             col = self.rect.x // self.cs - 1
             use_pickaxe = True
+            
         elif keys[pygame.K_s] and keys[pygame.K_o]:
             row = self.rect.y // self.cs + 1
             col = self.rect.x // self.cs
             use_pickaxe = True
+            
         elif keys[pygame.K_w] and keys[pygame.K_o]:
             row = self.rect.y // self.cs - 1
             col = self.rect.x // self.cs
             use_pickaxe = True
+            
 
         if self.pickaxe and use_pickaxe:
-            maze[row][col] = 0
-            self.pickaxe -= 1
+            # is a wall targeted?
+            if maze[row][col] == 1:
+                # destroy wall
+                maze[row][col] = 0
+                # remove one pickaxe
+                self.pickaxe -= 1
 
         return use_pickaxe
     
