@@ -3,7 +3,7 @@ MazeGame is a fun and exciting maze-based game where players must find a path th
 
 MazeGame was developed in Python and uses the following external libraries:
 
-    pygame, numpy
+`pygame, numpy`
 
 ## Installation
 
