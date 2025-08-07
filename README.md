@@ -1,11 +1,11 @@
-#Readme: MazeGame
+# Readme: MazeGame
 MazeGame is a fun and exciting maze-based game where players must find a path through a randomly generated maze to reach a treasure placed opposite their starting position. Along the way, they must avoid enemies and can use limited tools to manipulate the maze in their favor. Sound effects and background music are integrated to enhance immersion — including movement sounds, treasure pickup sounds, and an enemy attack sound.
 
 MazeGame was developed in Python and uses the following external libraries:
 
     pygame, numpy
 
-##Installation:
+## Installation:
 
 To run the game, make sure you have Python 3.x installed, then install the required packages using pip:
 
@@ -16,7 +16,7 @@ requirements.txt example:
 pygame
 numpy
 
-##Controls
+## Controls
 
 Use the following keyboard controls to navigate and interact with the maze:
 Key(s):	                        Action:
@@ -29,7 +29,7 @@ move+O	                        Use a pickaxe to remove a wall
 Shift       	                Highlight the path from your current Position
                                 to the treasure (cheat/debug feature)
 
-##Rules: 
+## Rules: 
     Each round, a new maze is generated randomly using a depth-first algorithm.
 
     The goal is to reach the treasure while avoiding enemies that patrol the maze.
@@ -44,7 +44,7 @@ Shift       	                Highlight the path from your current Position
 
 In Hard Mode enemy speed increases by one unit for each diamond you collect, making the game progressively harder.
 
-##Special Abilities:
+## Special Abilities:
 
 Players have 3 pickaxes available per game.
 
@@ -56,7 +56,7 @@ If the player is caught by an enemy:
 
      Pickaxes are refilled to 3
 
-##User Interface:
+## User Interface:
 
 A panel on the right side of the screen allows you to:
 
@@ -66,11 +66,11 @@ A panel on the right side of the screen allows you to:
 
         Track the number of collected diamonds without dying
 
-##Sound Effects & Audio
+## Sound Effects & Audio
 
 To enhance the gaming experience, MazeGame includes immersive sound design:
 
-##Sound Event	Description:
+## Sound Event	Description:
 
 Background Music	        A continuous soundtrack plays during
                             gameplay
@@ -83,7 +83,7 @@ Death Sound	                Plays when the player is eaten by an enemy
 
 These sound effects make the game feel more alive and help give audio cues about game events and danger.
 
-##Technical Details:
+## Technical Details:
 
     Maze generation uses a Depth-First Search (DFS) algorithm.
 
@@ -93,9 +93,9 @@ These sound effects make the game feel more alive and help give audio cues about
 
         Maze size
 
-##Developers:
+## Developers:
 
-###This project was developed by:
+### This project was developed by:
 
     Marek Pessel – [GUI interface, Solver Algorithm, Main]
 
