@@ -11,6 +11,8 @@ To run the game, make sure you have Python 3.x installed, then install the requi
 
     pip install pygame numpy
 
+If all required libraries are installed, run main.py to start the game.
+
 ## Controls
 
 Use the following keyboard controls to navigate and interact with the maze:
